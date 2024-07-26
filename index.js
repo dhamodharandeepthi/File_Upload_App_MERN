@@ -1,7 +1,8 @@
 const express = require("express");
-const connectToDb = require("./config/db");
+const path = require("path");
 const cors = require("cors");
 const userRoutes = require("./routes/user");
+const connectToDb = require("./config/db");
 require("dotenv").config();
 
 const app = express();
@@ -10,12 +11,14 @@ const PORT = process.env.PORT || 8000;
 app.use(cors());
 app.use(express.json());
 
+// Connect to the database
 connectToDb();
 
-app.use(express.static("public/upload"));
+// Serve static files
+app.use("/uploads", express.static(path.join(__dirname, "public/upload")));
 
 app.get("/", (req, res) => {
-  res.send("API is ready to serve");
+  res.send("API is running");
 });
 
 // API routes
